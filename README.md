@@ -8,7 +8,7 @@ Usage is demonstrated with the Iris Dataset from `scikit-learn`.
 To get started, clone the repository and install the necessary dependencies:
 
 ```sh
-git clone https://github.com/yourusername/knn-classifier.git
+git clone https://github.com/OhItsLena/k-NN.git
 python3 -m venv venv
 source venv/bin/activate  
 pip install -r requirements.txt
