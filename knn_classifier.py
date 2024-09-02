@@ -1,7 +1,5 @@
 from typing import List
 import numpy as np
-from sklearn.datasets import load_iris
-from sklearn.model_selection import train_test_split
 
 class knn_classifier:
     def __init__(self, k: int) -> None:
@@ -26,3 +24,24 @@ class knn_classifier:
     
     def accuracy(self, true_labels: np.ndarray, predicted_labels: List[int]) -> float:
         return np.mean(true_labels == predicted_labels)
+
+class knn_classifier_cross_validation(knn_classifier):
+    def __init__(self, k: int, num_folds: int) -> None:
+        super().__init__(k)
+        self.num_folds = num_folds
+
+    def cross_validate(self, features: np.ndarray, labels: np.ndarray) -> float:
+        fold_size = len(labels) // self.num_folds
+        accuracies = []
+        for fold in range(self.num_folds):
+            start = fold * fold_size
+            end = start + fold_size
+            validation_features = features[start:end]
+            validation_labels = labels[start:end]
+            training_features = np.concatenate([features[:start], features[end:]])
+            training_labels = np.concatenate([labels[:start], labels[end:]])
+            self.fit(training_features, training_labels)
+            predicted_labels = self.predict(validation_features)
+            accuracies.append(self.accuracy(validation_labels, predicted_labels))
+        return np.mean(accuracies)
+    
